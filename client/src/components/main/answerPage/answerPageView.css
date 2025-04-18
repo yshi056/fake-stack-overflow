@@ -1,0 +1,232 @@
+.answer_question_meta {
+    color: #bbbbbb;
+}
+
+.ansButton {
+    margin: 2% 0 2% 2%;
+}
+
+.answer-container {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e3e3e3;
+  }
+  
+  .answer-with-votes {
+    display: flex;
+  }
+  
+  .vote-section {
+    width: 60px;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+  }
+  
+  .vote-count {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #6a737c;
+  }
+  
+  .vote-btn {
+    background: none;
+    border: 1px solid #bbb;
+    color: #0074cc;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+  
+  .vote-btn:hover {
+    background-color: #f0f8ff;
+  }
+  
+  .vote-input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .vote-username-input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    width: 100%;
+  }
+  
+  .vote-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .vote-up-btn, .vote-down-btn {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 2px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .vote-up-btn {
+    color: #6a9c78;
+  }
+  
+  .vote-down-btn {
+    color: #c25b56;
+  }
+  
+  .vote-up-btn:hover {
+    background-color: #f1f8e9;
+  }
+  
+  .vote-down-btn:hover {
+    background-color: #fce8e6;
+  }
+  
+  .vote-up-btn.active {
+    background-color: #6a9c78;
+    color: white;
+  }
+  
+  .vote-down-btn.active {
+    background-color: #c25b56;
+    color: white;
+  }
+  
+  .cancel-vote-btn {
+    background: none;
+    border: 1px solid #ddd;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-top: 5px;
+  }
+  
+  .cancel-vote-btn:hover {
+    background-color: #f8f8f8;
+  }
+  
+  .answer-content {
+    flex: 1;
+  }
+  
+  .comments-section {
+    margin-top: 10px;
+    margin-left: 20px;
+    padding-left: 10px;
+    border-left: 3px solid #f1f1f1;
+  }
+  
+  .comments-list {
+    margin-bottom: 10px;
+  }
+  
+  .comment {
+    padding: 8px 0;
+    border-bottom: 1px dotted #e3e3e3;
+    font-size: 14px;
+  }
+  
+  .comment:last-child {
+    border-bottom: none;
+  }
+  
+  .comment-text {
+    margin: 0 0 5px 0;
+  }
+  
+  .comment-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: #6a737c;
+  }
+  
+  .comment-author {
+    font-weight: bold;
+  }
+  
+  .comment-date {
+    font-style: italic;
+  }
+  
+  .add-comment-button {
+    background: none;
+    border: none;
+    color: #0074cc;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+  }
+  
+  .add-comment-button:hover {
+    text-decoration: underline;
+  }
+  
+  .comment-form {
+    margin-top: 10px;
+  }
+  
+  .comment-input {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    resize: vertical;
+  }
+  
+  .comment-username {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .comment-form-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .submit-comment {
+    padding: 6px 12px;
+    background-color: #0074cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  
+  .submit-comment:hover {
+    background-color: #0062b1;
+  }
+  
+  .cancel-comment {
+    padding: 6px 12px;
+    background-color: #f8f8f8;
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  
+  .cancel-comment:hover {
+    background-color: #e6e6e6;
+  }

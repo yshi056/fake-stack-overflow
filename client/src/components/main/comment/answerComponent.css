@@ -1,0 +1,25 @@
+.answer-container {
+    padding: 16px;
+    border-bottom: 1px solid #e4e6e8;
+  }
+  
+  .answer-content {
+    margin-bottom: 12px;
+  }
+  
+  .answer-text {
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  
+  .answer-meta {
+    display: flex;
+    justify-content: flex-end;
+    color: #6a737c;
+    font-size: 12px;
+  }
+  
+  .answer-author {
+    color: #0074cc;
+    margin-right: 5px;
+  }

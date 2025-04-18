@@ -1,0 +1,122 @@
+/* components/main/profilePage/profileView.css */
+.profile-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 600px;
+  }
+  
+  .profile-sidebar {
+    width: 200px;
+    background-color: #f6f6f6;
+    border-right: 1px solid #e3e3e3;
+    padding: 20px 0;
+  }
+  
+  .sidebar-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #efefef;
+  }
+  
+  .sidebar-item.active {
+    background-color: #e6e6e6;
+    border-left-color: #f48024;
+    font-weight: bold;
+  }
+  
+  .profile-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Profile section styles */
+  .profile-section h3, 
+  .questions-section h3, 
+  .answers-section h3, 
+  .comments-section h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e3e3e3;
+  }
+  
+  .profile-info {
+    margin-bottom: 30px;
+  }
+  
+  .profile-row {
+    margin-bottom: 15px;
+    display: flex;
+  }
+  
+  .profile-label {
+    width: 100px;
+    font-weight: bold;
+    color: #6a737c;
+  }
+  
+  .profile-value {
+    flex: 1;
+  }
+  
+  .profile-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .edit-profile-btn, .change-password-btn {
+    padding: 8px 16px;
+    background-color: #0074cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-profile-btn:hover, .change-password-btn:hover {
+    background-color: #0062b1;
+  }
+  
+  /* Questions section styles */
+  .question-item, .answer-item, .comment-item {
+    border-bottom: 1px solid #e3e3e3;
+    padding: 15px 0;
+  }
+  
+  .question-item h4, .answer-item h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0074cc;
+    cursor: pointer;
+  }
+  
+  .question-item h4:hover, .answer-item h4:hover {
+    color: #0062b1;
+  }
+  
+  .question-stats, .answer-stats {
+    display: flex;
+    gap: 15px;
+    color: #6a737c;
+    font-size: 14px;
+  }
+  
+  /* Comments section styles */
+  .comment-text {
+    margin-bottom: 5px;
+    font-style: italic;
+  }
+  
+  .comment-date {
+    font-size: 12px;
+    color: #6a737c;
+  }
+  
+  .empty-list {
+    color: #6a737c;
+    font-style: italic;
+  }

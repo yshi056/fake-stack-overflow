@@ -1,0 +1,694 @@
+openapi: 3.0.0
+info:
+  title: Fake StackOverflow REST API
+  version: 1.0.0
+  description: |
+    API for managing questions, answers, and tags of a fake stack overflow application.
+
+    The API is organized into three main routes:
+    * Tags route: Managing tags and their statistics
+    * Questions route: Managing questions and their operations
+    * Answers route: Managing answers to questions
+
+servers:
+  - url: http://localhost:8000
+    description: Development server for the Fake StackOverflow REST API.
+
+tags:
+  - name: Tags
+    description: Operations related to tags
+  - name: Questions
+    description: Operations related to questions
+  - name: Answers
+    description: Operations related to answers
+  - name: User
+    description: Operations related to user authentication
+
+components:
+  responses:
+    ErrorResponse:
+      description: A generic error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "An error occurred"
+    BadRequest:
+      description: Bad Request - Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Internal Server Error"
+  schemas:
+    Tag:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "679846196243c96505ba4007"
+        name:
+          type: string
+          nullable: true
+          example: "react"
+        __v:
+          type: integer
+          example: 0
+
+    TagCount:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          example: "react"
+        qcnt:
+          type: integer
+          example: 1
+
+    Answer:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "679d61405af1815cc9398a86"
+        text:
+          type: string
+          example: You can solve your problem this way.
+        ans_by:
+          type: string
+          example: user-name
+        ans_date_time:
+          type: string
+          format: date-time
+          example: "2025-02-02T00:28:19.406Z"
+        __v:
+          type: integer
+          example: 0
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+              user:
+                type: string
+              comment_date_time:
+                type: string
+                format: date-time
+        upVotes:
+          type: array
+          items:
+            type: string
+        downVotes:
+          type: array
+          items:
+            type: string
+
+    Question:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 679846196243c96505ba4007
+        title:
+          type: string
+          example: Question title
+        text:
+          type: string
+          example: This explains the question further
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        answers:
+          type: array
+          items:
+            # oneOf is used to allow both answer IDs and answer objects answers in a question
+            oneOf:
+              - type: string # For answer IDs
+                example: "679846196243c96505ba4007"
+              - $ref: "#/components/schemas/Answer"
+                example:
+                  _id: "679d61405af1815cc9398a86"
+                  text: "You can solve your problem this way."
+                  ans_by: "user-name"
+                  ans_date_time: "2025-02-02T00:28:19.406Z"
+        asked_by:
+          type: string
+          example: user-name
+        ask_date_time:
+          type: string
+          format: date-time
+          example: "2025-02-02T00:28:19.406Z"
+        views:
+          type: integer
+          default: 0
+          example: 0
+        __v:
+          type: integer
+          example: 0
+
+    UserProfile:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "645a1c08b302fca521f64a1b"
+        username:
+          type: string
+          example: "john_doe"
+        email:
+          type: string
+          example: "john@example.com"
+        password:
+          type: string
+          example: "$2b$10$encryptedpassword"
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              text:
+                type: string
+              user:
+                type: string
+              comment_date_time:
+                type: string
+                format: date-time
+
+    AddAnswerRequest:
+      type: object
+      required:
+        - qid
+        - ans
+      properties:
+        qid:
+          type: string
+          example: "679846196243c96505ba4007"
+        ans:
+          type: object
+          required:
+            - text
+            - ans_date_time
+          properties:
+            text:
+              type: string
+              example: "It might be beneficial to do it this way."
+            ans_date_time:
+              type: string
+              format: date-time
+              example: "2025-02-02T00:28:19.406Z"
+
+    AddQuestionRequest:
+      type: object
+      required:
+        - title
+        - text
+        - tags
+        - ask_date_time
+      properties:
+        title:
+          type: string
+          example: "What can I do to resolve this error?"
+        text:
+          type: string
+          example: "More context regarding the question"
+        tags:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+            required:
+              - name
+        ask_date_time:
+          type: string
+          format: date-time
+          example: "2025-02-02T00:28:19.406Z"
+
+    SignupRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          example: "john_doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        password:
+          type: string
+          format: password
+          example: "password123"
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: "john_doe"
+        password:
+          type: string
+          format: password
+          example: "password123"
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR..."
+        message:
+          type: string
+          example: "Login successful"
+
+    AddCommentRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          example: "This is a helpful note."
+        comment_date_time:
+          type: string
+          format: date-time
+          example: "2025-04-15T22:00:00Z"
+
+    IUser:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "user-id"
+        name:
+          type: string
+          example: "john_doe"
+        email:
+          type: string
+          example: "john@example.com"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-01-01T00:00:00Z"
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "An error occurred"
+
+paths:
+  # Tags Controller Endpoints
+  /tag/getTagsWithQuestionNumber:
+    get:
+      tags:
+        - Tags
+      summary: Get all tags with their question counts
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TagCount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # Questions Controller Endpoints
+  /question/addQuestion:
+    post:
+      tags:
+        - Questions
+      summary: Add a new question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddQuestionRequest"
+      responses:
+        "200":
+          description: Question added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /question/getQuestionById/{qid}:
+    get:
+      tags:
+        - Questions
+      summary: Get question by ID
+      parameters:
+        - name: qid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "679846196243c96505ba4007"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /question/getQuestion:
+    get:
+      tags:
+        - Questions
+      summary: Get filtered questions
+      parameters:
+        - name: order
+          in: query
+          required: false
+          schema:
+            type: string
+            default: newest
+            example: "newest"
+          description: Order of questions (e.g., newest)
+        - name: search
+          in: query
+          required: false
+          allowEmptyValue: true
+          schema:
+            type: string
+            example: Android studio [mobile]
+          description: Search term to filter questions
+          explode: true
+          allowReserved: true
+          x-express-openapi-validator:
+            allowReservedCharacters: true
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Question"
+                minItems: 0
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # Answers Controller Endpoints
+  /answer/addAnswer:
+    post:
+      tags:
+        - Answers
+      summary: Add a new answer to a question
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddAnswerRequest"
+      responses:
+        "200":
+          description: Answer added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Answer"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /user/signup:
+    post:
+      tags:
+        - User
+      summary: Create a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+      responses:
+        "201":
+          description: User signed up successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User created successfully"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login successful"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid username or password"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /answer/{aid}/upvote:
+    patch:
+      tags:
+        - Answers
+      summary: Upvote an answer
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Answer upvoted successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /answer/{aid}/downvote:
+    patch:
+      tags:
+        - Answers
+      summary: Downvote an answer
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Answer downvoted successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /answer/{aid}/comment:
+    post:
+      tags:
+        - Answers
+      summary: Add a comment to an answer
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddCommentRequest"
+      responses:
+        "200":
+          description: Comment added successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    get:
+      tags:
+        - Answers
+      summary: Get comments for an answer
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    text:
+                      type: string
+                    user:
+                      type: string
+                    comment_date_time:
+                      type: string
+                      format: date-time
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          description: Answer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Answer not found"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /user/profile:
+    get:
+      tags:
+        - User
+      summary: Get authenticated user's profile
+      description: Requires a valid HTTP-only cookie (token)
+      responses:
+        "200":
+          description: User profile data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized - Cookie is missing or invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+   
+  /user/logout:
+   post:
+    tags:
+      - User
+    summary: Log out the current user
+    responses:
+      "200":
+        description: User logged out successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "User logged out successfully"
+      "500":
+        $ref: "#/components/responses/InternalServerError"
